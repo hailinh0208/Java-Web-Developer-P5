@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Console Appender (Optional, for local debugging) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- Splunk HTTP Appender -->
+        <SplunkHttp name="Splunk" url="http://localhost:8088/services/collector/event">
+            <!-- HEC Token -->
+            <KeyValuePair key="Authorization" value="Splunk 696f9a8c-0f85-4633-a6a9-81b87dfc78bb" />
+            <!-- Custom Source -->
+            <KeyValuePair key="source" value="spring-boot-logs" />
+            <!-- Custom Index -->
+            <KeyValuePair key="index" value="splunk_index" />
+            <!-- Custom Source Type -->
+            <KeyValuePair key="sourcetype" value="log4j" />
+            <Layout>
+                <JsonLayout compact="true" eventEol="true" />
+            </Layout>
+        </SplunkHttp>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="Splunk" />
+        </Root>
+    </Loggers>
+</Configuration>
